@@ -1,13 +1,11 @@
 <?php
     session_start();
-    if(!empty($_POST['page'])){
-        $page = $_POST['page'];
-        $_SESSION['page'] = $page;
-        header("Location: /index.php");
+    if(!empty($_GET['page'])){
+        $page = $_GET['page'];
     }else{
         $page = 1;
-    };
-    $page = $_SESSION['page'];
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -28,22 +26,28 @@
     <body>
         <section class="main__board">
             <div class="container-sm">
+            <a class="btn btn-primary" href="addpage.php" role="button">Добавить</a>
                 <div class="interview">
-                    <a class="btn btn-primary" href="addpage.php" role="button">Добавить</a>               
+                                   
                     <?php
                     // connect with database
                     require_once 'connectDB.php';
-                    $position = ($_SESSION['page']-1)*10;
-                    $sql = 'SELECT title FROM interviews LIMIT ' . $position . ',10';
+                    $position = ($page-1)*10;
+                    $sql = 'SELECT * FROM interviews LIMIT ' . $position . ',10';
                     //$sql = 'SELECT title FROM interviews ORDER BY id ASC LIMIT ' . $position . ',10';
                     // Output all interview on screen
                     foreach ($pdo->query($sql) as $row) {
                         $title =  $row['title'];
-                        echo "<div class=\"interview__item\">" . $title . "</div>";       
+                        $id = $row['interviewcode'];
+                        echo "
+                        <div class=\"item\">
+                            <div class=\"interview__item\">" . $title . "</div>
+                            <a class=\"edit__btn\" href=\"editpage.php?id=$id\">🖊</a>
+                        </div>";       
                     }          
                     ?>
                 </div>
-                <form class="pages" method="POST" action="index.php">
+                <div class="pages">
                     <?php
                         require_once 'connectDB.php';
                         // Counting count elements in table 'interviews'
@@ -55,11 +59,11 @@
                         // Create pages on screen
                         for($i = 1; $i<=$members; ++$i)
                         {
-                            echo "<input type=\"submit\" name=\"page\" class=\"page $i\" value=\"$i\">";
+                            echo "<a href=\"index.php?page=$i\" class=\"page $i\">$i</a>";
                         }
                     ?>
 
-                </form>
+                </div>
             </div>
         </section> 
     </body>
