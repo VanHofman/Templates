@@ -1,0 +1,7 @@
+/.idea/
+/vendor/
+config/database.php
+public/.htaccess
+/.htaccess
+tmp/errors.log
+public/uploads/

@@ -1,0 +1,19 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Blog\\": "blog/Сore",
+            "App\\": "app"
+        }
+    },
+    "require": {
+        "gabordemooij/redbean": "dev-master"
+    },
+    "scripts": {
+        "pre-autoload-dump": [
+            "php -r \"copy('.htaccess.example', 'public/.htaccess');\"",
+            "php -r \"copy('database.php.example', 'config/database.php');\"",
+            "php -r \"mkdir('public/uploads');\"",
+            "php -r \"copy('default.png.example', 'public/uploads/default.png');\""
+        ]
+    }
+}
